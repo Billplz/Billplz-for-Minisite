@@ -65,16 +65,14 @@ You need to have a form which collect and pass the input to the script.
 
 # Issues?
 
-Check the following:
+- Check the following
   1. API Key
   2. Collection ID
   3. Mode (IF YOU ARE USING PRODUCTION API KEY, PLEASE USE "Production". ELSE, PLEASE USE "Staging"
   4. You form method is set to POST and action is set to the correct file "billplzpost.php"
  
 - Please email to me: wan@wanzul-hosting.com 
- 
- ---
- 
+
  # Donation
  
  You can support this project by donation: www.wanzul.net/donate
