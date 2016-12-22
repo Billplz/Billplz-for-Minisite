@@ -15,11 +15,11 @@ Open configuration.php file with your favourite text editor and edit the followi
 
 *Replace with your values in the single quotes*
 
-  1. 'APIKEY' => 'Your API Key here'
-  2. 'COLLECTION' => 'You Collection ID here'
-  3. 'http://www.google.com/' => 'The full URL to your minisite or the full URL to this script subdirectory'
-  4. 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'
-  5. 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
+  * 'APIKEY' => 'Your API Key here'
+  * 'COLLECTION' => 'You Collection ID here'
+  * 'http://www.google.com/' => 'The full URL to your minisite or the full URL to this script subdirectory
+  * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'
+  * 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
 
 For integration with Affiliate Pro software: **(Optional)**
 
@@ -71,7 +71,9 @@ Check the following:
   3. Mode (IF YOU ARE USING PRODUCTION API KEY, PLEASE USE "Production". ELSE, PLEASE USE "Staging"
   4. You form method is set to POST and action is set to the correct file "billplzpost.php"
  
- Please email to me: wan@wanzul-hosting.com
+- Please email to me: wan@wanzul-hosting.com 
+ 
+ ---
  
  # Donation
  
