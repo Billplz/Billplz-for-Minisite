@@ -55,7 +55,7 @@ You need to have a form which collect and pass the input to the script.
   5. Notification => deliver
   6. Reference Label => reference_label
   7. Reference Data => reference_1
-  8. Payment Description => description
+  8. Payment Description => **description**
   
 - Use input method="post" and action to file "billplzpost.php"
 
