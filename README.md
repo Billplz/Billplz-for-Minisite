@@ -9,9 +9,10 @@ Integrate Billplz with your Minisite written with HTML code.
 
 # Configuration
 
-Download this Repository and upload the individual files to your minisite directory. (It can be same directory with your Minisite or it can be in subdirectory which is Recommended)
+Download this Repository and upload the individual files to your minisite directory. (It can be same directory with your Minisite or it can be in subdirectory which is **Recommended**)
 
 Open configuration.php file with your favourite text editor and edit the following information:
+
 *Replace with your values in the single quotes*
 
   1. 'APIKEY' => 'Your API Key here'
