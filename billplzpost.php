@@ -1,0 +1,159 @@
+<?php
+
+require_once 'billplz.php';
+require_once 'configuration.php';
+
+
+class billplzpost {
+
+    var $variable;
+    var $billplz;
+
+    function __construct() {
+        
+        $this->variable = array();
+        $this->billplz = new billplz;
+    }
+
+    function apikey() {
+        global $api_key;
+        if ($api_key == 'APIKEY') {
+            exit('You need to set up your API Key');
+        } else {
+            $this->variable['api_key'] = $api_key;
+        }
+        return $this;
+    }
+
+    function collection() {
+        global $collection_id;
+        if ($collection_id == 'COLLECTION') {
+            exit('You need to set up your Collection ID');
+        } else {
+            $this->variable['collection_id'] = $collection_id;
+        }
+        return $this;
+    }
+
+    function name() {
+        if (isset($_POST['nama'])) {
+            $this->variable['name'] = filter_var($_POST['nama'], FILTER_SANITIZE_STRING);
+        } else {
+            exit('You need to pass the parameter "nama"');
+        }
+        return $this;
+    }
+
+    function email() {
+        if (isset($_POST['email'])) {
+            $this->variable['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            if (!filter_var($this->variable['email'], FILTER_VALIDATE_EMAIL) === false) {
+                //Nothing to do
+            } else {
+                exit($_POST['email'] . 'is not a valid email address');
+            }
+        } else {
+            $this->variable['email'] = '';
+        }
+        return $this;
+    }
+
+    function mobile() {
+        if (isset($_POST['telefonbimbit'])) {
+            $this->variable['mobile'] = filter_var($_POST['telefonbimbit'], FILTER_SANITIZE_STRING);
+        } else {
+            if ($this->variable['email'] = '') {
+                exit('You need to pass the parameter "telefonbimbit"');
+            }
+        }
+        return $this;
+    }
+
+    function amount() {
+
+        if (isset($_POST['amaun'])) {
+            $this->variable['amount'] = filter_var($_POST['amaun'], FILTER_SANITIZE_STRING);
+        } else {
+            exit('You need to pass the parameter "amaun"');
+        }
+        return $this;
+    }
+
+    function deliver() {
+        if (isset($_POST['notifikasi'])) {
+            $notification = filter_var($_POST['notifikasi'], FILTER_SANITIZE_STRING);
+            if ($notification == 'ya') {
+                $this->variable['notifikasi'] = true;
+            }
+        } else {
+            $this->variable['notifikasi'] = false;
+        }
+        return $this;
+    }
+
+    function reference_label() {
+        if (isset($_POST['reference_label'])) {
+            $this->variable['reference_label_1'] = filter_var($_POST['reference_label'], FILTER_SANITIZE_STRING);
+        } else {
+            $this->variable['reference_label_1'] = 'ID';
+        }
+        return $this;
+    }
+
+    function reference() {
+        if (isset($_POST['reference'])) {
+            $this->variable['reference_1'] = filter_var($_POST['reference'], FILTER_SANITIZE_STRING);
+        } else {
+            $this->variable['reference_1'] = '';
+        }
+        return $this;
+    }
+
+    function description() {
+        if (isset($_POST['description'])) {
+            $this->variable['description'] = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+        } else {
+            exit('You need to pass the parameter "description"');
+        }
+        return $this;
+    }
+
+    function redirect() {
+        global $websiteurl;
+        $this->variable['redirect_url'] = $websiteurl . 'verifytrans.php';
+        return $this;
+    }
+
+    function callback() {
+        global $websiteurl;
+        $this->variable['callback_url'] = $websiteurl . 'callback.php';
+        return $this;
+    }
+
+    function process() {
+        global $mode;
+        
+        $this->billplz->setAmount($this->variable['amount'])
+                ->setCollection($this->variable['collection_id'])
+                ->setDeliver($this->variable['notifikasi'])
+                ->setDescription($this->variable['description'])
+                
+                ->setEmail($this->variable['email'])
+                ->setMobile($this->variable['mobile'])
+                ->setName($this->variable['name'])
+                ->setPassbackURL($this->variable['redirect_url'], $this->variable['callback_url'])
+                ->setReference_1($this->variable['reference_1'])
+                ->setReference_1_Label($this->variable['reference_label_1'])
+                ->create_bill($this->variable['api_key'], $mode);
+        
+        if ($this->billplz->getURL() == ''){
+            exit('Check Your API Key, Collection ID and Mode');
+        }
+        header('Location: ' . $this->billplz->getURL());
+    }
+
+}
+
+$call = new billplzpost;
+$call->apikey()->collection()->name()->email()->mobile()->amount()->deliver()->reference_label()->reference()->description()->redirect()->callback();
+$call->process();
