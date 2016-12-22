@@ -73,6 +73,6 @@ You need to have a form which collect and pass the input to the script.
  
 - Please email to me: wan@wanzul-hosting.com 
 
- # Donation
+# Donation
  
  You can support this project by donation: www.wanzul.net/donate
