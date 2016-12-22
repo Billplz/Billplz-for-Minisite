@@ -1,4 +1,4 @@
-# Billplz-for-Minisite
+# Billplz for Minisite
 
 Integrate Billplz with your Minisite written with HTML code. 
 
