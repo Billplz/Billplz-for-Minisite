@@ -22,6 +22,8 @@ Open configuration.php file with your favourite text editor and edit the followi
   * 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
   *  **Optional**: Set $fallbackurl value  in the event of failure to redirect user to payment page
 
+---
+
 For integration with Affiliate Pro software: **(Optional)**
 
   1. Include the tracking code in file **billplzpost.php** after // Include tracking code here
@@ -31,6 +33,8 @@ For integration with Affiliate Pro software: **(Optional)**
   2. Include the tracking code in file **verifytrans.php** after // Include tracking code here
   
   **Line 31: include('affiliate-pro/controller/record-sale.php');**
+  
+  ---
 
 # How to use
 
