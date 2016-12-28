@@ -3,14 +3,13 @@
 require_once 'billplz.php';
 require_once 'configuration.php';
 
-
 class billplzpost {
 
     var $variable;
     var $billplz;
 
     function __construct() {
-        
+
         $this->variable = array();
         $this->billplz = new billplz;
     }
@@ -18,7 +17,7 @@ class billplzpost {
     function apikey() {
         global $api_key;
         if ($api_key == 'APIKEY') {
-            exit('You need to set up your API Key');
+            echo('You need to set up your API Key');
         } else {
             $this->variable['api_key'] = $api_key;
         }
@@ -28,7 +27,7 @@ class billplzpost {
     function collection() {
         global $collection_id;
         if ($collection_id == 'COLLECTION') {
-            exit('You need to set up your Collection ID');
+            echo('You need to set up your Collection ID');
         } else {
             $this->variable['collection_id'] = $collection_id;
         }
@@ -39,7 +38,7 @@ class billplzpost {
         if (isset($_POST['nama'])) {
             $this->variable['name'] = filter_var($_POST['nama'], FILTER_SANITIZE_STRING);
         } else {
-            exit('You need to pass the parameter "nama"');
+            echo('You need to pass the parameter "nama"');
         }
         return $this;
     }
@@ -50,7 +49,7 @@ class billplzpost {
             if (!filter_var($this->variable['email'], FILTER_VALIDATE_EMAIL) === false) {
                 //Nothing to do
             } else {
-                exit($_POST['email'] . 'is not a valid email address');
+                echo($_POST['email'] . 'is not a valid email address');
             }
         } else {
             $this->variable['email'] = '';
@@ -63,7 +62,7 @@ class billplzpost {
             $this->variable['mobile'] = filter_var($_POST['telefonbimbit'], FILTER_SANITIZE_STRING);
         } else {
             if ($this->variable['email'] = '') {
-                exit('You need to pass the parameter "telefonbimbit"');
+                echo('You need to pass the parameter "telefonbimbit"');
             }
         }
         return $this;
@@ -74,7 +73,7 @@ class billplzpost {
         if (isset($_POST['amaun'])) {
             $this->variable['amount'] = filter_var($_POST['amaun'], FILTER_SANITIZE_STRING);
         } else {
-            exit('You need to pass the parameter "amaun"');
+            echo('You need to pass the parameter "amaun"');
         }
         return $this;
     }
@@ -113,7 +112,7 @@ class billplzpost {
         if (isset($_POST['description'])) {
             $this->variable['description'] = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
         } else {
-            exit('You need to pass the parameter "description"');
+            echo('You need to pass the parameter "description"');
         }
         return $this;
     }
@@ -132,12 +131,12 @@ class billplzpost {
 
     function process() {
         global $mode;
-        
+        global $websiteurl;
+        global $fallbackurl;
         $this->billplz->setAmount($this->variable['amount'])
                 ->setCollection($this->variable['collection_id'])
                 ->setDeliver($this->variable['notifikasi'])
                 ->setDescription($this->variable['description'])
-                
                 ->setEmail($this->variable['email'])
                 ->setMobile($this->variable['mobile'])
                 ->setName($this->variable['name'])
@@ -145,11 +144,22 @@ class billplzpost {
                 ->setReference_1($this->variable['reference_1'])
                 ->setReference_1_Label($this->variable['reference_label_1'])
                 ->create_bill($this->variable['api_key'], $mode);
-        
-        if ($this->billplz->getURL() == ''){
-            exit('Check Your API Key, Collection ID and Mode');
+
+        //If the Create Bills API NOT Successfully triggered
+        if ($this->billplz->getURL() == '') {
+            //If you have set the fallback url if the Create Bill API failed
+            if ($fallbackurl != '') {
+                echo "<script>location.href = '" . $fallbackurl . "'</script>";
+            }
+            //If you have'nt set the fallback url, user will redirected to website url if Create Bill API failed
+            else {
+                echo "<script>location.href = '" . $websiteurl . "'</script>";
+            }
         }
-        header('Location: ' . $this->billplz->getURL());
+        //If the Create Bills API Successfully triggered
+        else {
+            header('Location: ' . $this->billplz->getURL());
+        }
     }
 
 }
@@ -157,3 +167,8 @@ class billplzpost {
 $call = new billplzpost;
 $call->apikey()->collection()->name()->email()->mobile()->amount()->deliver()->reference_label()->reference()->description()->redirect()->callback();
 $call->process();
+
+//////////////////////////////////////////////////
+// Include tracking code here
+
+//////////////////////////////////////////////////
