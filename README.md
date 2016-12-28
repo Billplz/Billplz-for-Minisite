@@ -20,7 +20,7 @@ Open configuration.php file with your favourite text editor and edit the followi
   * 'http://www.google.com/' => 'The full URL to your minisite or the full URL to this script subdirectory
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'
   * 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
-  *  OPTIONAL: Set $fallbackurl value  in the event of failure to redirect user to payment page
+  *  **Optional**: Set $fallbackurl value  in the event of failure to redirect user to payment page
 
 For integration with Affiliate Pro software: **(Optional)**
 
