@@ -34,7 +34,7 @@ For integration with Affiliate Pro software: **(Optional)**
   
   **Line 31: include('affiliate-pro/controller/record-sale.php');**
   
-  ---
+---
 
 # How to use
 
