@@ -8,7 +8,7 @@
  * 4. Replace the http://www.google.com/success.html with your FULL PATH TO YOUR SUCCESS PAGE. 
  * 5. No need to change $mode (Default: 'Production'). Change to 'Staging' only if you want to test with
  *      https://billplz-staging.herokuapp.com
- * 
+ * 6. OPTIONAL: Set $fallbackurl if the user are failed to be redirected to the Billplz Payment Page
  * 
  */
 $api_key = 'APIKEY';
@@ -17,3 +17,5 @@ $websiteurl = 'http://www.google.com/';
 
 $successpath = 'http://www.google.com/success.html';
 $mode = 'Production';
+
+$fallbackurl = '';
