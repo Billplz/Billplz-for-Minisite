@@ -18,4 +18,4 @@ $websiteurl = 'http://www.google.com/';
 $successpath = 'http://www.google.com/success.html';
 $mode = 'Production';
 
-$fallbackurl = '';
+$fallbackurl = ''; //Example: $fallbackurl = 'http://www.google.com/pay.php';
