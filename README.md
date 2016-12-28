@@ -20,14 +20,15 @@ Open configuration.php file with your favourite text editor and edit the followi
   * 'http://www.google.com/' => 'The full URL to your minisite or the full URL to this script subdirectory
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'
   * 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
+  *  OPTIONAL: Set $fallbackurl value  in the event of failure to redirect user to payment page
 
 For integration with Affiliate Pro software: **(Optional)**
 
-  1. Include the tracking code on your minisite or the form if you separate the form from the minisite homepage
+  1. Include the tracking code in file **billplzpost.php** after // Include tracking code here
   
-  **include('affiliate-pro/controller/affiliate-tracking.php');**
+  **Line 171: include('affiliate-pro/controller/affiliate-tracking.php');**
   
-  2. Include the tracking the tracking in file **verifytrans.php**
+  2. Include the tracking code in file **verifytrans.php** after // Include tracking code here
   
   **Line 31: include('affiliate-pro/controller/record-sale.php');**
 
