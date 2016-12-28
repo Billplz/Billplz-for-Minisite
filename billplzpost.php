@@ -166,9 +166,8 @@ class billplzpost {
 
 $call = new billplzpost;
 $call->apikey()->collection()->name()->email()->mobile()->amount()->deliver()->reference_label()->reference()->description()->redirect()->callback();
-$call->process();
-
 //////////////////////////////////////////////////
 // Include tracking code here
 
 //////////////////////////////////////////////////
+$call->process();
