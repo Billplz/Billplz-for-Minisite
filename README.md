@@ -28,7 +28,7 @@ For integration with Affiliate Pro software: **(Optional)**
 
   1. Include the tracking code in file **billplzpost.php** after // Include tracking code here
   
-  **Line 171: include('affiliate-pro/controller/affiliate-tracking.php');**
+  **Line 176: include('affiliate-pro/controller/affiliate-tracking.php');**
   
   2. Include the tracking code in file **verifytrans.php** after // Include tracking code here
   
