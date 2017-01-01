@@ -70,15 +70,15 @@ class billplzpost {
 
     function amount() {
 
-        if (isset($_POST['amaun'])) {
-            $this->variable['amount'] = filter_var($_POST['amaun'], FILTER_SANITIZE_STRING);
-        } else {
-            global $amount;
-            if ($amount == '') {
-                echo('You need to pass the parameter "amaun"');
+        global $amount;
+        if ($amount == '') {
+            if (isset($_POST['amaun'])) {
+                $this->variable['amount'] = filter_var($_POST['amaun'], FILTER_SANITIZE_STRING);
             } else {
-                $this->variable['amount'] = $amount;
+                echo('You need to pass the parameter "amaun"');
             }
+        } else {
+            $this->variable['amount'] = $amount;
         }
         return $this;
     }
