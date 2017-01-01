@@ -42,7 +42,7 @@ For integration with Affiliate Pro software: **(Optional)**
   
   3. Insert the code below in **configuration.php** after $fallbackurl = ''; and replace '30' with your own value
   
-  **Line 22: $commission = '30'; 
+  **Line 22: $commission = '30'; **
   
 ---
 
