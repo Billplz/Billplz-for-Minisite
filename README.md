@@ -21,6 +21,7 @@ Open configuration.php file with your favourite text editor and edit the followi
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'
   * 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
   *  **Optional**: Set $fallbackurl value  in the event of failure to redirect user to payment page
+  *  **Optional**: Set $amount value for fixed payment value. Useful to avoid user setting their own price
 
 ---
 
@@ -55,7 +56,7 @@ You need to have a form which collect and pass the input to the script.
   1. Payer Name => **Mandatory**
   2. Payer Email => **Mandatory**
   3. Payer Mobile Phone Number => Optional
-  4. Amount => **Mandatory**
+  4. Amount => **Mandatory** (Optional: If $amount value has been set at Configuration stage)
   5. Notification => Optional
   6. Reference Label => Optional
   7. Reference Data => Optional
