@@ -36,7 +36,13 @@ For integration with Affiliate Pro software: **(Optional)**
   
   **Line 32: $product = $this->data['description'];**
   
+  **Line 33: global $commission;**
+  
   **Line 33: include('affiliate-pro/controller/record-sale.php');**
+  
+  3. Insert the code below in **configuration.php** after $fallbackurl = ''; and replace '30' with your own value
+  
+  **Line 22: $commission = '30'; 
   
 ---
 
