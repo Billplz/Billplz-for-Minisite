@@ -14,8 +14,8 @@
 $api_key = 'APIKEY';
 $collection_id = 'COLLECTION';
 $websiteurl = 'http://www.google.com/';
-
 $successpath = 'http://www.google.com/success.html';
-$mode = 'Production';
 
+$mode = 'Production';
+$amount = ''; //Example (RM13.50): $amount = '13.50';
 $fallbackurl = ''; //Example: $fallbackurl = 'http://www.google.com/pay.php';
