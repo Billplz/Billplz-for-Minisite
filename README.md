@@ -32,11 +32,12 @@ For integration with Affiliate Pro software: **(Optional)**
   **Line 176: include('affiliate-pro/controller/affiliate-tracking.php');**
   
   2. Include the tracking code in file **verifytrans.php** after // Include tracking code here
+  **Line 31:**
   <pre>
-  **Line 31: $sale_amount = number_format((float)($this->data['amount']/100), 2, '.', '');
-  Line 32: $product = $this->data['description'];**
-  Line 33: global $commission;**
-  Line 33: include('affiliate-pro/controller/record-sale.php');**
+  $sale_amount = number_format((float)($this->data['amount']/100), 2, '.', '');
+  $product = $this->data['description'];**
+  global $commission;**
+  include('affiliate-pro/controller/record-sale.php');**
   </pre>
   
   3. Insert the code below in **configuration.php** after $fallbackurl = ''; and replace '30' with your own value
