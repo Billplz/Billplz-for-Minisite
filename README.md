@@ -56,7 +56,7 @@ You need to have a form which collect and pass the input to the script.
   1. Payer Name => **Mandatory**
   2. Payer Email => **Mandatory**
   3. Payer Mobile Phone Number => Optional
-  4. Amount => **Mandatory** (Optional: If $amount value has been set at Configuration stage)
+  4. Amount => **Mandatory** (NOT REQUIRED: If $amount value has been set at Configuration stage)
   5. Notification => Optional
   6. Reference Label => Optional
   7. Reference Data => Optional
