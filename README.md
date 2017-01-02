@@ -67,6 +67,8 @@ You need to have a form which collect and pass the input to the script.
   6. Reference Label => Optional
   7. Reference Data => Optional
   8. Payment Description => **Mandatory**
+  9. Success URL => Optional
+  10. Website URL => Optional
   
 - The HTML Form input name must be according to the name below:
 
