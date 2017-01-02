@@ -18,7 +18,7 @@ Open configuration.php file with your favourite text editor and edit the followi
   * 'APIKEY' => 'Your API Key here'
   * 'COLLECTION' => 'You Collection ID here'
   * 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
-  * 'http://www.google.com/' => 'The full URL to your minisite or the full URL to this script subdirectory. *It can be overriden later*
+  * 'http://www.google.com/' => 'The full URL to your minisite or the full URL to this script subdirectory.
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'. *It can be overriden later*
   *  **Optional**: Set $fallbackurl value  in the event of failure to redirect user to payment page
   *  **Optional**: Set $amount value for fixed payment value. Useful to avoid user setting their own price
@@ -68,7 +68,6 @@ You need to have a form which collect and pass the input to the script.
   7. Reference Data => Optional
   8. Payment Description => **Mandatory**
   9. Success URL => Optional
-  10. Website URL => Optional
   
 - The HTML Form input name must be according to the name below:
 
@@ -81,7 +80,6 @@ You need to have a form which collect and pass the input to the script.
   7. Reference Data => reference_1
   8. Payment Description => **description**
   9. Success URL => successpath
-  10. Website URL => websiteurl
   
 - Use input method="post" and action to file "billplzpost.php"
 
