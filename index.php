@@ -3,6 +3,7 @@
     <input type='hidden' name='email' value='emailsini@ymail.com'>
     <input type='hidden' name="telefonbimbit" value="0121234567">
     <input type="hidden" name="amaun" value ="54.30">
+    <!--Put deliver value as "ya" to enable notification-->
     <input type="hidden" name="deliver" value ="">
     <input type="hidden" name="reference_label" value="">
     <input type="hidden" name="reference_1" value="7">
