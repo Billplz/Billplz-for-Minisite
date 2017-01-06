@@ -4,7 +4,6 @@
  * How to use?
  *  require_once('billplz.php');
  *  $obj = new billplz;
- *  $obj->setAutoSubmit('autosubmitvalue');
  *  $obj->setCollection('collectionid');
  *  $obj->setName('name');
  *  $obj->setEmail('email');
@@ -231,7 +230,7 @@ class curlaction {
 
 /*
  $obj = new billplz;
- $obj->setAutoSubmit('billplz')->setCollection('ugo_7dit')
+ $obj->setCollection('ugo_7dit')
  ->setName('Wan Zulkarnain')
  ->setEmail('wanzulkarnain69@gmail.com')
  ->setMobile('0145356443')
