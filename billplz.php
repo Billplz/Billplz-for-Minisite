@@ -11,6 +11,7 @@
  *  $obj->setAmount('amount');
  *  $obj->setDeliver(false);
  *  $obj->setReference_1('reference 1');
+ *  $obj->setReference_1_Label('reference_1_label);
  *  $obj->setDescription('description');
  *  $obj->setPassbackURL('redirect','callback');
  *  $obj->create_bill('apikey', 'Production');
