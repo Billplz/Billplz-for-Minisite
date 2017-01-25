@@ -97,7 +97,7 @@ class billplz {
     }
 
     public function setAmount($amount) {
-        $this->array['amount'] = $amount * 100;
+        $this->array['amount'] = preg_replace('/\D/', '', $amount) * 100;
         return $this;
     }
 
