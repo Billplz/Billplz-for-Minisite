@@ -16,7 +16,8 @@ Open configuration.php file with your favourite text editor and edit the followi
 *Replace with your values in the single quotes*
 
   * 'APIKEY' => 'Your API Key here'
-  * 'COLLECTION' => 'You Collection ID here'
+  * 'COLLECTION' => 'Your Collection ID here'
+  * 'X_SIGNATURE' => 'Your X Signature Key here'
   * 'Production' => 'Leave it as Production or change it to Staging if you are using API Key from billplz staging'
   * 'http://www.google.com/' => 'The full URL to your minisite or the full URL to this script subdirectory.
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'. *It can be overriden later*
@@ -29,14 +30,14 @@ For integration with Affiliate Pro software: **(Optional)**
 
   1. Include the tracking code in file **billplzpost.php** after // Include tracking code here
   
-  **Line 185:** 
+  **Line 188:** 
   <pre>
   include('affiliate-pro/controller/affiliate-tracking.php');
   </pre>
   
   2. Include the tracking code in file **verifytrans.php** after // Include tracking code here
   
-  **Line 31:**
+  **Line 40:**
   <pre>
   $sale_amount = number_format((float)($this->data['amount']/100), 2, '.', '');
   $product = $this->data['description'];**
@@ -46,7 +47,7 @@ For integration with Affiliate Pro software: **(Optional)**
   
   3. Insert the code below in **configuration.php** after $fallbackurl = ''; and replace '30' with your own value
   
-  **Line 22:**
+  **Line 25:**
   <pre>
   $commission = '30';
   </pre>
