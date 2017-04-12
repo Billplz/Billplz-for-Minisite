@@ -87,10 +87,14 @@ class billplzpost {
         if (isset($_POST['notifikasi'])) {
             $notification = filter_var($_POST['notifikasi'], FILTER_SANITIZE_STRING);
             if ($notification == 'ya') {
-                $this->variable['notifikasi'] = true;
+                $this->variable['notifikasi'] = '3';
+            } else if ($notification == 'email') {
+                $this->variable['notifikasi'] = '1';
+            } else { //SMS
+                $this->variable['notifikasi'] = '2';
             }
         } else {
-            $this->variable['notifikasi'] = false;
+            $this->variable['notifikasi'] = '0';
         }
         return $this;
     }
@@ -133,8 +137,8 @@ class billplzpost {
         $this->variable['callback_url'] = $websiteurl . 'callback.php';
         return $this;
     }
-    
-    function overrideSuccessPath(){
+
+    function overrideSuccessPath() {
         if (isset($_POST['successpath'])) {
             $this->variable['redirect_url'] = $this->variable['redirect_url'] . '?successpath=' . base64_encode(filter_var($_POST['successpath'], FILTER_SANITIZE_STRING));
         } else {
@@ -182,6 +186,5 @@ $call = new billplzpost;
 $call->apikey()->collection()->name()->email()->mobile()->amount()->deliver()->reference_label()->reference()->description()->redirect()->overrideSuccessPath()->callback();
 //////////////////////////////////////////////////
 // Include tracking code here
-
 //////////////////////////////////////////////////
 $call->process();
