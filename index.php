@@ -6,6 +6,7 @@
     <!--Put deliver value as "ya" to enable notification-->
     <!--Put deliver value as "email" to enable emmail notification only-->
     <!--Put deliver value as "sms" to sms notification only-->
+    <!--Leave blank for no notification-->
     <input type="hidden" name="deliver" value ="">
     <input type="hidden" name="reference_label" value="">
     <input type="hidden" name="reference_1" value="7">
