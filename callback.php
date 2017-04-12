@@ -33,7 +33,7 @@ $moreData = $billplz->check_bill($api_key, $tranID, $mode);
  * 
  * Contoh untuk akses data email: $moreData['email'];
  * 
- * Dalam variable $data ada maklumat berikut:
+ * Dalam variable $data ada maklumat berikut (array):
  * 1. x_signature
  * 2. id // bill_id
  * 3. paid
