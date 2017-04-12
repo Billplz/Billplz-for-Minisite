@@ -7,6 +7,7 @@ class verifytrans {
 
     //var $billplz;
     var $data;
+
     //var $moreData;
 
     function __construct() {
@@ -40,12 +41,27 @@ class verifytrans {
             // Include tracking code here
             //////////////////////////////////////////////////
             if (isset($_GET['successpath'])) {
-                header('Location: ' . base64_decode($_GET['successpath']));
+                if (!headers_sent()) {
+                    header('Location: ' . base64_decode($_GET['successpath']));
+                } else {
+                    echo "If you are not redirected, please click <a href=" . '"' . base64_decode($_GET['successpath']) . '"' . " target='_self'>Here</a><br />"
+                    . "<script>location.href = '" . base64_decode($_GET['successpath']) . "'</script>";
+                }
             } else {
-                header('Location: ' . $successpath);
+                if (!headers_sent()) {
+                    header('Location: ' . $successpath);
+                } else {
+                    echo "If you are not redirected, please click <a href=" . '"' . $successpath . '"' . " target='_self'>Here</a><br />"
+                    . "<script>location.href = '" . $successpath . "'</script>";
+                }
             }
         } else {
-            header('Location: ' . $this->data['url']);
+            if (!headers_sent()) {
+                header('Location: ' . $this->data['url']);
+            } else {
+                echo "If you are not redirected, please click <a href=" . '"' . $this->data['url'] . '"' . " target='_self'>Here</a><br />"
+                . "<script>location.href = '" . $this->data['url'] . "'</script>";
+            }
         }
     }
 
