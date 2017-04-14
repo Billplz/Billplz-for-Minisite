@@ -40,7 +40,7 @@ class verifytrans {
             //////////////////////////////////////////////////
             // Include tracking code here
             //////////////////////////////////////////////////
-            if (isset($_GET['successpath'])) {
+            if (!empty($_GET['successpath'])) {
                 if (!headers_sent()) {
                     header('Location: ' . base64_decode($_GET['successpath']));
                 } else {
