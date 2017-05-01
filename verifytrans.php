@@ -5,10 +5,9 @@ require_once 'configuration.php';
 
 class verifytrans {
 
-    //var $billplz;
+    var $billplz;
     var $data;
-
-    //var $moreData;
+    var $moreData;
 
     function __construct() {
         /*
@@ -16,13 +15,13 @@ class verifytrans {
          */
         global $x_signature;
         $this->data = billplz::getRedirectData($x_signature);
-        //$this->billplz = new billplz;
+        $this->billplz = new billplz;
     }
 
     function checkStatus() {
-        //global $api_key, $mode;
-        //$bill_id = $this->data['id'];
-        //$this->moreData = $this->billplz->check_bill($api_key, $bill_id, $mode);
+        global $api_key, $mode;
+        $bill_id = $this->data['id'];
+        $this->moreData = $this->billplz->check_bill($api_key, $bill_id, $mode);
         return $this;
     }
 
@@ -36,7 +35,7 @@ class verifytrans {
 
     function process() {
         global $successpath;
-        if ($this->data['paid']) {
+        if ($this->moreData['paid']) {
             //////////////////////////////////////////////////
             // Include tracking code here
             //////////////////////////////////////////////////
@@ -57,10 +56,10 @@ class verifytrans {
             }
         } else {
             if (!headers_sent()) {
-                header('Location: ' . $this->data['url']);
+                header('Location: ' . $this->moreData['url']);
             } else {
                 echo "If you are not redirected, please click <a href=" . '"' . $this->data['url'] . '"' . " target='_self'>Here</a><br />"
-                . "<script>location.href = '" . $this->data['url'] . "'</script>";
+                . "<script>location.href = '" . $this->moreData['url'] . "'</script>";
             }
         }
     }
