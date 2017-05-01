@@ -67,5 +67,4 @@ class verifytrans {
 }
 
 $verifytrans = new verifytrans();
-//$verifytrans->checkStatus()->process();
-$verifytrans->process();
+$verifytrans->checkStatus()->process();
