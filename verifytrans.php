@@ -22,7 +22,7 @@ class verifytrans {
     function checkStatus() {
         global $api_key, $mode;
         $bill_id = $this->data['id'];
-        $this->moreData = $this->billplz->check_bill($api_key, $bill_id, $mode);
+        $this->moreData = $this->billplz->check_bill($api_key, $bill_id);
         return $this;
     }
      */
