@@ -10,7 +10,7 @@ $data = billplz::getCallbackData($x_signature);
 $tranID = $data['id'];
 
 $billplz = new billplz;
-$moreData = $billplz->check_bill($api_key, $tranID, $mode);
+$moreData = $billplz->check_bill($api_key, $tranID);
 
 /*
  * Dalam variable $moreData ada maklumat berikut (array):
