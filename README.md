@@ -36,7 +36,7 @@ For integration with Affiliate Pro software: **(Optional)**
   
   2. Include the tracking code in file **verifytrans.php** after // Include tracking code here
   
-  **Line 42:**
+  **Line 40:**
   <pre>
   $sale_amount = number_format((float)($this->data['amount']/100), 2, '.', '');
   $product = $this->data['description'];**
