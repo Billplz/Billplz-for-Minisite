@@ -27,8 +27,8 @@ class billplzpost {
     function collection() {
         global $collection_id;
 
-        if (isset($_POST['collection_id'])) {
-            $this->variable['collection_id'] = $_POST['collection_id'];
+        if (isset($_REQUEST['collection_id'])) {
+            $this->variable['collection_id'] = $_REQUEST['collection_id'];
         } else {
             $this->variable['collection_id'] = $collection_id;
         }
@@ -36,8 +36,8 @@ class billplzpost {
     }
 
     function name() {
-        if (isset($_POST['nama'])) {
-            $this->variable['name'] = filter_var($_POST['nama'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['nama'])) {
+            $this->variable['name'] = filter_var($_REQUEST['nama'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['name'] = 'No Name';
             echo('You need to pass the parameter "nama"');
@@ -46,12 +46,12 @@ class billplzpost {
     }
 
     function email() {
-        if (isset($_POST['email'])) {
-            $this->variable['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+        if (isset($_REQUEST['email'])) {
+            $this->variable['email'] = filter_var($_REQUEST['email'], FILTER_SANITIZE_EMAIL);
             if (!filter_var($this->variable['email'], FILTER_VALIDATE_EMAIL) === false) {
                 //Nothing to do
             } else {
-                echo($_POST['email'] . 'is not a valid email address');
+                echo($_REQUEST['email'] . 'is not a valid email address');
             }
         } else {
             $this->variable['email'] = '';
@@ -60,8 +60,8 @@ class billplzpost {
     }
 
     function mobile() {
-        if (isset($_POST['telefonbimbit'])) {
-            $this->variable['mobile'] = filter_var($_POST['telefonbimbit'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['telefonbimbit'])) {
+            $this->variable['mobile'] = filter_var($_REQUEST['telefonbimbit'], FILTER_SANITIZE_STRING);
         } else {
             if ($this->variable['email'] = '') {
                 echo('You need to pass the parameter "telefonbimbit"');
@@ -74,8 +74,8 @@ class billplzpost {
 
         global $amount;
         if ($amount == '') {
-            if (isset($_POST['amaun'])) {
-                $this->variable['amount'] = filter_var($_POST['amaun'], FILTER_SANITIZE_STRING);
+            if (isset($_REQUEST['amaun'])) {
+                $this->variable['amount'] = filter_var($_REQUEST['amaun'], FILTER_SANITIZE_STRING);
             } else {
                 $this->variable['amount'] = '2';
                 echo('You need to pass the parameter "amaun"');
@@ -87,8 +87,8 @@ class billplzpost {
     }
 
     function deliver() {
-        if (isset($_POST['notifikasi'])) {
-            $notification = filter_var($_POST['notifikasi'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['notifikasi'])) {
+            $notification = filter_var($_REQUEST['notifikasi'], FILTER_SANITIZE_STRING);
             if ($notification == 'ya') {
                 $this->variable['notifikasi'] = '3';
             } else if ($notification == 'email') {
@@ -103,8 +103,8 @@ class billplzpost {
     }
 
     function reference_label_1() {
-        if (isset($_POST['reference_label_1'])) {
-            $this->variable['reference_label_1'] = filter_var($_POST['reference_label_1'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['reference_label_1'])) {
+            $this->variable['reference_label_1'] = filter_var($_REQUEST['reference_label_1'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['reference_label_1'] = 'ID';
         }
@@ -112,8 +112,8 @@ class billplzpost {
     }
 
     function reference_1() {
-        if (isset($_POST['reference_1'])) {
-            $this->variable['reference_1'] = filter_var($_POST['reference_1'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['reference_1'])) {
+            $this->variable['reference_1'] = filter_var($_REQUEST['reference_1'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['reference_1'] = '';
         }
@@ -121,8 +121,8 @@ class billplzpost {
     }
 
     function reference_label_2() {
-        if (isset($_POST['reference_label_2'])) {
-            $this->variable['reference_label_2'] = filter_var($_POST['reference_label_2'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['reference_label_2'])) {
+            $this->variable['reference_label_2'] = filter_var($_REQUEST['reference_label_2'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['reference_label_2'] = 'ID';
         }
@@ -130,8 +130,8 @@ class billplzpost {
     }
 
     function reference_2() {
-        if (isset($_POST['reference_2'])) {
-            $this->variable['reference_2'] = filter_var($_POST['reference_2'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['reference_2'])) {
+            $this->variable['reference_2'] = filter_var($_REQUEST['reference_2'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['reference_2'] = '';
         }
@@ -139,8 +139,8 @@ class billplzpost {
     }
 
     function description() {
-        if (isset($_POST['description'])) {
-            $this->variable['description'] = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+        if (isset($_REQUEST['description'])) {
+            $this->variable['description'] = filter_var($_REQUEST['description'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['description'] = 'No Description Provided';
             echo('You need to pass the parameter "description"');
@@ -161,8 +161,8 @@ class billplzpost {
     }
 
     function overrideSuccessPath() {
-        if (isset($_POST['successpath'])) {
-            $this->variable['redirect_url'] = $this->variable['redirect_url'] . '?successpath=' . base64_encode(filter_var($_POST['successpath'], FILTER_SANITIZE_STRING));
+        if (isset($_REQUEST['successpath'])) {
+            $this->variable['redirect_url'] = $this->variable['redirect_url'] . '?successpath=' . base64_encode(filter_var($_REQUEST['successpath'], FILTER_SANITIZE_STRING));
         } else {
             //Do Nothing
         }
