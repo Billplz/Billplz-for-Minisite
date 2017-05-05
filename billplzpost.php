@@ -26,8 +26,9 @@ class billplzpost {
 
     function collection() {
         global $collection_id;
-        if ($collection_id == 'COLLECTION') {
-            echo('You need to set up your Collection ID');
+
+        if (isset($_POST['collection_id'])) {
+            $this->variable['collection_id'] = $_POST['collection_id'];
         } else {
             $this->variable['collection_id'] = $collection_id;
         }
@@ -38,6 +39,7 @@ class billplzpost {
         if (isset($_POST['nama'])) {
             $this->variable['name'] = filter_var($_POST['nama'], FILTER_SANITIZE_STRING);
         } else {
+            $this->variable['name'] = 'No Name';
             echo('You need to pass the parameter "nama"');
         }
         return $this;
@@ -75,6 +77,7 @@ class billplzpost {
             if (isset($_POST['amaun'])) {
                 $this->variable['amount'] = filter_var($_POST['amaun'], FILTER_SANITIZE_STRING);
             } else {
+                $this->variable['amount'] = '2';
                 echo('You need to pass the parameter "amaun"');
             }
         } else {
@@ -99,20 +102,38 @@ class billplzpost {
         return $this;
     }
 
-    function reference_label() {
-        if (isset($_POST['reference_label'])) {
-            $this->variable['reference_label_1'] = filter_var($_POST['reference_label'], FILTER_SANITIZE_STRING);
+    function reference_label_1() {
+        if (isset($_POST['reference_label_1'])) {
+            $this->variable['reference_label_1'] = filter_var($_POST['reference_label_1'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['reference_label_1'] = 'ID';
         }
         return $this;
     }
 
-    function reference() {
-        if (isset($_POST['reference'])) {
-            $this->variable['reference_1'] = filter_var($_POST['reference'], FILTER_SANITIZE_STRING);
+    function reference_1() {
+        if (isset($_POST['reference_1'])) {
+            $this->variable['reference_1'] = filter_var($_POST['reference_1'], FILTER_SANITIZE_STRING);
         } else {
             $this->variable['reference_1'] = '';
+        }
+        return $this;
+    }
+
+    function reference_label_2() {
+        if (isset($_POST['reference_label_2'])) {
+            $this->variable['reference_label_2'] = filter_var($_POST['reference_label_2'], FILTER_SANITIZE_STRING);
+        } else {
+            $this->variable['reference_label_2'] = 'ID';
+        }
+        return $this;
+    }
+
+    function reference_2() {
+        if (isset($_POST['reference_2'])) {
+            $this->variable['reference_2'] = filter_var($_POST['reference_2'], FILTER_SANITIZE_STRING);
+        } else {
+            $this->variable['reference_2'] = '';
         }
         return $this;
     }
@@ -121,6 +142,7 @@ class billplzpost {
         if (isset($_POST['description'])) {
             $this->variable['description'] = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
         } else {
+            $this->variable['description'] = 'No Description Provided';
             echo('You need to pass the parameter "description"');
         }
         return $this;
@@ -148,7 +170,6 @@ class billplzpost {
     }
 
     function process() {
-        global $mode;
         global $websiteurl;
         global $fallbackurl;
         $this->billplz->setAmount($this->variable['amount'])
@@ -158,10 +179,12 @@ class billplzpost {
                 ->setEmail($this->variable['email'])
                 ->setMobile($this->variable['mobile'])
                 ->setName($this->variable['name'])
-                ->setPassbackURL($this->variable['redirect_url'], $this->variable['callback_url'])
+                ->setPassbackURL($this->variable['callback_url'], $this->variable['redirect_url'])
                 ->setReference_1($this->variable['reference_1'])
                 ->setReference_1_Label($this->variable['reference_label_1'])
-                ->create_bill($this->variable['api_key'], $mode);
+                ->setReference_2($this->variable['reference_2'])
+                ->setReference_2_Label($this->variable['reference_label_2'])
+                ->create_bill($this->variable['api_key'], true);
 
         //If the Create Bills API NOT Successfully triggered
         if ($this->billplz->getURL() == '') {
@@ -183,7 +206,22 @@ class billplzpost {
 }
 
 $call = new billplzpost;
-$call->apikey()->collection()->name()->email()->mobile()->amount()->deliver()->reference_label()->reference()->description()->redirect()->overrideSuccessPath()->callback();
+$call
+        ->apikey()
+        ->collection()
+        ->name()
+        ->email()
+        ->mobile()
+        ->amount()
+        ->deliver()
+        ->reference_label_1()
+        ->reference_1()
+        ->reference_label_2()
+        ->reference_2()
+        ->description()
+        ->redirect()
+        ->overrideSuccessPath()
+        ->callback();
 //////////////////////////////////////////////////
 // Include tracking code here
 //////////////////////////////////////////////////
