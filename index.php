@@ -8,7 +8,7 @@
     <!--Put deliver value as "sms" to sms notification only-->
     <!--Leave blank for no notification-->
     <input type="hidden" name="deliver" value ="">
-    <input type="hidden" name="reference_label" value="">
+    <input type="hidden" name="reference_label_1" value="">
     <input type="hidden" name="reference_1" value="7">
     <input type="hidden" name="description" value ="apa2">
     <input type="hidden" name="successpath" value = "">
