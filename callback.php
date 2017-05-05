@@ -54,9 +54,8 @@ $moreData = $billplz->check_bill($api_key, $tranID, $mode);
 
 /*
  * Jika bayaran telah dibuat
- * Mesti rely on $moreData sbb otherwise dia jadi string 'true'
  */
-if ($moreData['paid']) {
+if ($data['paid']) {
     
 }
 /*
