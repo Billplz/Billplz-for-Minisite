@@ -64,11 +64,13 @@ You need to have a form which collect and pass the input to the script.
   3. Payer Mobile Phone Number => Optional
   4. Amount => **Mandatory** (NOT REQUIRED: If $amount value has been set at Configuration stage)
   5. Notification => Optional
-  6. Reference Label => Optional
-  7. Reference Data => Optional
-  8. Payment Description => **Mandatory**
-  9. Success URL => Optional
-  10. Collection ID => Optional
+  6. Reference 1 Label => Optional
+  7. Reference 1 Data => Optional
+  8. Reference 2 Label => Optional
+  9. Reference 2 Data => Optional
+  10. Payment Description => **Mandatory**
+  11. Success URL => Optional
+  12. Collection ID => Optional
   
 - The HTML Form input name must be according to the name below:
 
@@ -77,11 +79,13 @@ You need to have a form which collect and pass the input to the script.
   3. Payer Mobile Phone Number => telefonbimbit 
   4. Amount => **amaun**
   5. Notification => deliver
-  6. Reference Label => reference_label
-  7. Reference Data => reference_1
-  8. Payment Description => **description**
-  9. Success URL => successpath
-  10. Collection ID => collection_id
+  6. Reference 1 Label => reference_label_1
+  7. Reference 1 Data => reference_1
+  8. Reference 2 Label => reference_label_2
+  9. Reference 2 Data => reference_2
+  10. Payment Description => **description**
+  11. Success URL => successpath
+  12. Collection ID => collection_id
   
 - Use input method="post" and action to file "billplzpost.php"
 
