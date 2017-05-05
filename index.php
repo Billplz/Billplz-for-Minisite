@@ -12,6 +12,7 @@
     <input type="hidden" name="reference_1" value="7">
     <input type="hidden" name="description" value ="apa2">
     <input type="hidden" name="successpath" value = "">
+    <input type="hidden" name="collection_id" value = "">
     <input type="submit">
     
 </form>
