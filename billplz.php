@@ -2,6 +2,7 @@
 
 class billplz {
 
+    public static $version = 3.01;
     var $array, $obj, $auto_submit, $url, $id, $deliverLevel, $errorMessage;
 
     public function __construct() {
@@ -9,9 +10,19 @@ class billplz {
         $this->obj = new curlaction;
     }
 
-    public function getCollectionIndex($api_key, $mode = 'Production', $status = null, $page = '1') {
+    public function getCollectionIndex($api_key, $page = '1', $mode = '', $status = null) {
         $this->obj->setAPI($api_key);
+
+        /*
+         * Identify mode if not supplied
+         */
+
+        if (empty($mode)) {
+            $mode = $this->check_api_key($api_key);
+        }
+
         $this->obj->setAction('GETCOLLECTIONINDEX');
+
         $this->obj->setURL($mode);
         $array = [
             'page' => $page,
@@ -24,7 +35,7 @@ class billplz {
 
     public static function getRedirectData($signkey) {
         $data = [
-            'id' => $_GET['billplz']['id'],
+            'id' => isset($_GET['billplz']['id']) ? $_GET['billplz']['id'] : exit('Billplz ID is not supplied'),
             'paid_at' => isset($_GET['billplz']['paid_at']) ? $_GET['billplz']['paid_at'] : exit('Please enable Billplz XSignature Payment Completion'),
             'paid' => isset($_GET['billplz']['paid']) ? $_GET['billplz']['paid'] : exit('Please enable Billplz XSignature Payment Completion'),
             'x_signature' => isset($_GET['billplz']['x_signature']) ? $_GET['billplz']['x_signature'] : exit('Please enable Billplz XSignature Payment Completion'),
@@ -39,6 +50,12 @@ class billplz {
             }
         }
         $generatedSHA = hash_hmac('sha256', $preparedString, $signkey);
+
+        /*
+         * Convert paid status to boolean
+         */
+        $data['paid'] = $data['paid'] === 'true' ? true : false;
+
         if ($data['x_signature'] === $generatedSHA) {
             return $data;
         } else {
@@ -48,19 +65,19 @@ class billplz {
 
     public static function getCallbackData($signkey) {
         $data = [
-            'amount' => $_POST['amount'],
-            'collection_id' => $_POST['collection_id'],
-            'due_at' => $_POST['due_at'],
-            'email' => $_POST['email'],
-            'id' => $_POST['id'],
-            'mobile' => $_POST['mobile'],
-            'name' => $_POST['name'],
-            'paid_amount' => $_POST['paid_amount'],
-            'paid_at' => $_POST['paid_at'],
-            'paid' => $_POST['paid'],
-            'state' => $_POST['state'],
-            'url' => $_POST['url'],
-            'x_signature' => $_POST['x_signature'],
+            'amount' => isset($_POST['amount']) ? $_POST['amount'] : exit('Amount is not supplied'),
+            'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : exit('Collection ID is not supplied'),
+            'due_at' => isset($_POST['due_at']) ? $_POST['due_at'] : '',
+            'email' => isset($_POST['email']) ? $_POST['email'] : '',
+            'id' => isset($_POST['id']) ? $_POST['id'] : exit('Billplz ID is not supplied'),
+            'mobile' => isset($_POST['mobile']) ? $_POST['mobile'] : '',
+            'name' => isset($_POST['name']) ? $_POST['name'] : exit('Payer Name is not supplied'),
+            'paid_amount' => isset($_POST['paid_amount']) ? $_POST['paid_amount'] : '',
+            'paid_at' => isset($_POST['paid_at']) ? $_POST['paid_at'] : '',
+            'paid' => isset($_POST['paid']) ? $_POST['paid'] : exit('Paid status is not supplied'),
+            'state' => isset($_POST['state']) ? $_POST['state'] : exit('State is not supplied'),
+            'url' => isset($_POST['url']) ? $_POST['url'] : exit('URL is not supplied'),
+            'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] : exit('X Signature is not enabled'),
         ];
         $preparedString = '';
         foreach ($data as $key => $value) {
@@ -72,6 +89,12 @@ class billplz {
             }
         }
         $generatedSHA = hash_hmac('sha256', $preparedString, $signkey);
+
+        /*
+         * Convert paid status to boolean
+         */
+        $data['paid'] = $data['paid'] === 'true' ? true : false;
+
         if ($data['x_signature'] === $generatedSHA) {
             return $data;
         } else {
@@ -79,8 +102,11 @@ class billplz {
         }
     }
 
-//--------------------------------------------------------------------------
-// Direct Use
+    /*
+     * Funciton: check_apikey_collectionid is
+     * deprecated. Will be removed soon
+     */
+
     public function check_apikey_collectionid($api_key, $collection_id, $mode) {
         $array = array(
             'collection_id' => $collection_id,
@@ -105,8 +131,21 @@ class billplz {
         }
     }
 
-//------------------------------------------------------------------------//
-// Indirect Use
+    public function deleteBill($api_key, $bill_id, $mode = '') {
+        $this->obj->setAPI($api_key);
+        /*
+         * Identify mode if not supplied
+         */
+
+        if (empty($mode)) {
+            $mode = $this->check_api_key($api_key);
+        }
+        $this->obj->setAction('DELETE');
+        $this->obj->setURL($mode, $bill_id);
+        $data = $this->obj->curl_action();
+        return $data;
+    }
+
     public function checkMobileNumber($mobile) {
         $mobile = preg_replace("/[^0-9]/", "", $mobile);
         $custTel = $mobile;
@@ -125,8 +164,6 @@ class billplz {
         } return $custTel;
     }
 
-//------------------------------------------------------------------------//
-// Direct Use
     public function setCollection($collection_id) {
         $this->array['collection_id'] = $collection_id;
         return $this;
@@ -172,12 +209,17 @@ class billplz {
         return $this;
     }
 
+    public function setReference_2($reference_1) {
+        $this->array['reference_2'] = substr($reference_1, 0, 119);
+        return $this;
+    }
+
     public function setDescription($description) {
         $this->array['description'] = substr($description, 0, 199);
         return $this;
     }
 
-    public function setPassbackURL($redirect_url, $callback_url) {
+    public function setPassbackURL($callback_url, $redirect_url = '') {
         $this->array['redirect_url'] = $redirect_url;
         $this->array['callback_url'] = $callback_url;
         return $this;
@@ -188,7 +230,128 @@ class billplz {
         return $this;
     }
 
-    public function create_bill($api_key, $mode) {
+    public function setReference_2_Label($label) {
+        $this->array['reference_2_label'] = substr($label, 0, 19);
+        return $this;
+    }
+
+    public function create_collection($api_key, $title = 'Payment For Purchase', $mode = '') {
+        $this->obj->setAPI($api_key);
+        $this->obj->setAction('COLLECTIONS');
+
+        $this->obj->setURL($mode);
+        $data = [
+            'title' => $title
+        ];
+        $collection = $this->obj->curl_action($data);
+        return $collection['id'];
+    }
+
+    /*
+     * Determine the API Key is belong to Production or Staging
+     * Else, exit the program.
+     */
+
+    public function check_api_key($api_key) {
+        $this->obj->setAPI($api_key);
+        $this->obj->setAction('GETCOLLECTIONINDEX');
+        $array = [
+            'page' => '1',
+            'status' => null,
+        ];
+        $this->obj->setURL('Production');
+
+        $status = $this->obj->curl_action($array);
+        if (isset($status['collections'])) {
+            return 'Production';
+        }
+        $this->obj->setURL('Staging');
+        $status = $this->obj->curl_action($array);
+
+        if (isset($status['collections'])) {
+            return 'Staging';
+        } else {
+            exit('Invalid API Key Provided');
+        }
+    }
+
+    public function check_collection_id($api_key, $collection_id, $mode = '') {
+
+        /*
+         * Identify mode if not supplied
+         */
+
+        if (empty($mode)) {
+            $mode = $this->check_api_key($api_key);
+        }
+        $this->obj->setAPI($api_key);
+        $this->obj->setAction('CHECKCOLLECTION');
+        $this->obj->setURL($mode);
+        $data = [
+            'id' => $collection_id
+        ];
+        $status = $this->obj->curl_action($data);
+        if (isset($status['id'])) {
+            if ($status['id'] == $collection_id)
+                return true;
+        }
+        return false;
+    }
+
+    /*
+     * Return the first active collection on first page.
+     * If none, return the first collection of inactive collection.
+     * 
+     * If collection is not created yet, create one
+     */
+
+    public function get_active_collection($api_key, $data) {
+        if (empty($data['collections'])) {
+            $collection_id = $this->create_collection($api_key);
+        } else {
+            for ($i = 0; $i < sizeof($data['collections']); $i++) {
+                if ($data['collections'][$i]['status'] == 'active') {
+                    $collection_id = $data['collections'][$i]['id'];
+                    break;
+                } else {
+                    $collection_id = $data['collections'][0]['id'];
+                }
+            }
+        }
+        return $collection_id;
+    }
+
+    public function create_bill($api_key, $checkCollection = false, $mode = '') {
+        /*
+         * Identify mode if not supplied
+         */
+
+        if (empty($mode)) {
+            $mode = $this->check_api_key($api_key);
+        }
+
+        /*
+         * Check Collection ID that has been entered is valid or not
+         * If invalid, unset and auto-assign collection id
+         */
+
+        if ($checkCollection && isset($this->array['collection_id'])) {
+            $status = $this->check_collection_id($api_key, $this->array['collection_id'], $mode);
+            if (!$status)
+                unset($this->array['collection_id']);
+        }
+
+        /*
+         * Check wether the collection id is not set
+         * If not set, get collection id
+         */
+
+        if (!isset($this->array['collection_id'])) {
+            $collectionData = $this->getCollectionIndex($api_key, $mode);
+
+            $this->array['collection_id'] = $this->get_active_collection($api_key, $collectionData);
+        }
+
         $this->obj->setAPI($api_key);
         $this->obj->setAction('CREATE');
         $this->obj->setURL($mode);
@@ -215,7 +378,6 @@ class billplz {
         }
 
         $data = $this->obj->curl_action($this->array);
-
         if (isset($data['error'])) {
             if ($this->deliverLevel == '1') {
                 unset($this->array['email']);
@@ -232,7 +394,7 @@ class billplz {
         }
 
         if (isset($data['error'])) {
-            $this->errorMessage = $data['error']['type'] . ' ' . $data['error']['message'];
+            $this->errorMessage = $data['error']['type'] . ' ' . print_r($data['error']['message'], true);
             return false;
         }
         $this->url = $data['url'];
@@ -252,10 +414,19 @@ class billplz {
         return $this->id;
     }
 
-//------------------------------------------------------------------------//
-// Direct Use
-    public function check_bill($api_key, $bill_id, $mode) {
+    /*
+     * Get Bills 
+     */
+
+    public function check_bill($api_key, $bill_id, $mode = '') {
         $this->obj->setAPI($api_key);
+        /*
+         * Identify mode if not supplied
+         */
+
+        if (empty($mode)) {
+            $mode = $this->check_api_key($api_key);
+        }
         $this->obj->setAction('CHECK');
         $this->obj->setURL($mode, $bill_id);
         $data = $this->obj->curl_action();
@@ -292,42 +463,54 @@ class curlaction {
             $this->url .= 'bills/';
         } else if ($this->action == 'GETCOLLECTIONINDEX') {
             $this->url .= 'collections';
-        } else { //COLLECTIONS
+        } else { //COLLECTIONS or CHECKCOLLECTION
             $this->url .= 'collections/';
         }
         return $this;
     }
 
     public function curl_action($data = '') {
-        // Use wp_safe_remote_post for Windows Server Compatibility
-        if (function_exists('wp_safe_remote_post')) {
+        $process = curl_init();
+        if ($this->action == 'GETCOLLECTIONINDEX') {
+            //echo '<pre>'.print_r($data, true).'</pre>';
+            $this->url .= '?page=' . $data['page'] . '&status=' . $data['status'];
+        } else if ($this->action == 'CHECKCOLLECTION') {
+            $this->url .= $data['id'];
+        }
+
+        curl_setopt($process, CURLOPT_URL, $this->url);
+        curl_setopt($process, CURLOPT_HEADER, 0);
+        curl_setopt($process, CURLOPT_USERPWD, $this->api_key . ":");
+        if ($this->action == 'DELETE') {
+            curl_setopt($process, CURLOPT_CUSTOMREQUEST, "DELETE");
+        }
+        curl_setopt($process, CURLOPT_TIMEOUT, 10);
+        curl_setopt($process, CURLOPT_RETURNTRANSFER, TRUE);
+        if ($this->action == 'CREATE' || $this->action == 'COLLECTIONS') {
+            curl_setopt($process, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+        $return = curl_exec($process);
+        curl_close($process);
+
+        /*
+         * If curl failed to functioning and wp_safe_remote_post function is 
+         * present. Use wp_safe_remote_post
+         */
+
+        if (!$return && function_exists('wp_safe_remote_post')) {
             if ($this->action == 'GETCOLLECTIONINDEX')
                 $this->url .= '?page=' . $data['page'] . '&status=' . $data['status'];
+            else if ($this->action == 'CHECKCOLLECTION')
+                $this->url .= $data['id'];
             else
                 $curl_url = $this->url;
             // Send this payload to Billplz for processing
             $response = wp_safe_remote_post($curl_url, $this->prepareWP($data));
             return json_decode(wp_remote_retrieve_body($response), true);
-        } else {
-            $process = curl_init();
-            if ($this->action == 'GETCOLLECTIONINDEX')
-                $this->url .= '?page=' . $data['page'] . '&status=' . $data['status'];
-            curl_setopt($process, CURLOPT_URL, $this->url);
-            curl_setopt($process, CURLOPT_HEADER, 0);
-            curl_setopt($process, CURLOPT_USERPWD, $this->api_key . ":");
-            if ($this->action == 'DELETE') {
-                curl_setopt($process, CURLOPT_CUSTOMREQUEST, "DELETE");
-            }
-            curl_setopt($process, CURLOPT_TIMEOUT, 10);
-            curl_setopt($process, CURLOPT_RETURNTRANSFER, TRUE);
-            if ($this->action == 'CREATE' || $this->action == 'COLLECTIONS') {
-                curl_setopt($process, CURLOPT_POSTFIELDS, http_build_query($data));
-            }
-            $return = curl_exec($process);
-            curl_close($process);
-            $this->curldata = json_decode($return, true);
-            return $this->curldata;
         }
+
+        $this->curldata = json_decode($return, true);
+        return $this->curldata;
     }
 
     private function prepareWP($data) {
