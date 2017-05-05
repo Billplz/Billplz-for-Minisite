@@ -5,9 +5,9 @@ require_once 'configuration.php';
 
 class verifytrans {
 
-    var $billplz;
+    //var $billplz;
     var $data;
-    var $moreData;
+    //var $moreData;
 
     function __construct() {
         /*
@@ -15,15 +15,17 @@ class verifytrans {
          */
         global $x_signature;
         $this->data = billplz::getRedirectData($x_signature);
-        $this->billplz = new billplz;
+        //$this->billplz = new billplz;
     }
 
+    /*
     function checkStatus() {
         global $api_key, $mode;
         $bill_id = $this->data['id'];
         $this->moreData = $this->billplz->check_bill($api_key, $bill_id, $mode);
         return $this;
     }
+     */
 
     /*
      * Dalam variable $this->data ada maklumat berikut:
@@ -35,7 +37,7 @@ class verifytrans {
 
     function process() {
         global $successpath;
-        if ($this->moreData['paid']) {
+        if ($this->data['paid']) {
             //////////////////////////////////////////////////
             // Include tracking code here
             //////////////////////////////////////////////////
@@ -67,4 +69,5 @@ class verifytrans {
 }
 
 $verifytrans = new verifytrans();
-$verifytrans->checkStatus()->process();
+//$verifytrans->checkStatus()->process();
+$verifytrans->process();
