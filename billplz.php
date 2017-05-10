@@ -1,13 +1,18 @@
 <?php
 
-class billplz {
+require 'vendor/autoload.php';
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+
+class Billplz {
 
     public static $version = 3.01;
     var $array, $obj, $auto_submit, $url, $id, $deliverLevel, $errorMessage;
 
     public function __construct() {
         $this->array = array();
-        $this->obj = new curlaction;
+        $this->obj = new BillplzAction;
     }
 
     public function getCollectionIndex($api_key, $page = '1', $mode = '', $status = null) {
@@ -131,6 +136,11 @@ class billplz {
         }
     }
 
+    /*
+     * Return true if delete bill success
+     * Return false if delete bill not success
+     */
+
     public function deleteBill($api_key, $bill_id, $mode = '') {
         $this->obj->setAPI($api_key);
         /*
@@ -143,7 +153,11 @@ class billplz {
         $this->obj->setAction('DELETE');
         $this->obj->setURL($mode, $bill_id);
         $data = $this->obj->curl_action();
-        return $data;
+
+        if (empty($data)) {
+            return true;
+        }
+        return false;
     }
 
     public function checkMobileNumber($mobile) {
@@ -237,6 +251,15 @@ class billplz {
 
     public function create_collection($api_key, $title = 'Payment For Purchase', $mode = '') {
         $this->obj->setAPI($api_key);
+        
+        /*
+         * Identify mode if not supplied
+         */
+
+        if (empty($mode)) {
+            $mode = $this->check_api_key($api_key);
+        }
+        
         $this->obj->setAction('COLLECTIONS');
 
         $this->obj->setURL($mode);
@@ -435,7 +458,7 @@ class billplz {
 
 }
 
-class curlaction {
+class BillplzAction {
 
     var $url, $action, $curldata, $api_key;
     public static $production = 'https://www.billplz.com/api/v3/';
@@ -470,66 +493,54 @@ class curlaction {
     }
 
     public function curl_action($data = '') {
-        $process = curl_init();
+
         if ($this->action == 'GETCOLLECTIONINDEX') {
-            //echo '<pre>'.print_r($data, true).'</pre>';
             $this->url .= '?page=' . $data['page'] . '&status=' . $data['status'];
         } else if ($this->action == 'CHECKCOLLECTION') {
             $this->url .= $data['id'];
         }
 
-        curl_setopt($process, CURLOPT_URL, $this->url);
-        curl_setopt($process, CURLOPT_HEADER, 0);
-        curl_setopt($process, CURLOPT_USERPWD, $this->api_key . ":");
-        if ($this->action == 'DELETE') {
-            curl_setopt($process, CURLOPT_CUSTOMREQUEST, "DELETE");
-        }
-        curl_setopt($process, CURLOPT_TIMEOUT, 10);
-        curl_setopt($process, CURLOPT_RETURNTRANSFER, TRUE);
-        if ($this->action == 'CREATE' || $this->action == 'COLLECTIONS') {
-            curl_setopt($process, CURLOPT_POSTFIELDS, http_build_query($data));
-        }
-        $return = curl_exec($process);
-        curl_close($process);
+        $client = new Client();
 
         /*
-         * If curl failed to functioning and wp_safe_remote_post function is 
-         * present. Use wp_safe_remote_post
+         * Determine request type 
+         * Action Available:
+         * DELETE (DELETE)
+         * CHECK (GET)
+         * CREATE (POST)
+         * GETCOLLECTIONINDEX (GET)
+         * CHECKCOLLECTION (POST)
+         * COLLECTIONS (POST)
+         * 
          */
 
-        if (!$return && function_exists('wp_safe_remote_post')) {
-            if ($this->action == 'GETCOLLECTIONINDEX')
-                $this->url .= '?page=' . $data['page'] . '&status=' . $data['status'];
-            else if ($this->action == 'CHECKCOLLECTION')
-                $this->url .= $data['id'];
-            else
-                $curl_url = $this->url;
-            // Send this payload to Billplz for processing
-            $response = wp_safe_remote_post($curl_url, $this->prepareWP($data));
-            return json_decode(wp_remote_retrieve_body($response), true);
-        }
-
-        $this->curldata = json_decode($return, true);
-        return $this->curldata;
-    }
-
-    private function prepareWP($data) {
-        $args = array(
-            'headers' => array(
-                'Authorization' => 'Basic ' . base64_encode($this->api_key . ':')
-            )
-        );
         if ($this->action == 'DELETE') {
-            $args['method'] = 'DELETE';
-        } elseif ($this->action == 'CHECK') {
-            $args['method'] = 'GET';
+            $reqType = 'DELETE';
+        } else if ($this->action == 'CHECK' || $this->action == 'GETCOLLECTIONINDEX') {
+            $reqType = 'GET';
         } else {
-            $args['method'] = 'POST';
+            $reqType = 'POST';
         }
+
+        $preparedHeader = [
+            'auth' => [$this->api_key, ''],
+            'verify' => false,
+        ];
+
         if ($this->action == 'CREATE' || $this->action == 'COLLECTIONS') {
-            $args['body'] = http_build_query($data);
+            $preparedHeader['form_params'] = $data;
         }
-        return $args;
+        try {
+            $response = $client->request($reqType, $this->url, $preparedHeader);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+        } finally {
+            $contents = $response->getBody()->getContents();
+        }
+
+        $this->curldata = json_decode($contents, true);
+
+        return $this->curldata;
     }
 
 }
