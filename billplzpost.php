@@ -106,7 +106,7 @@ class billplzpost {
         if (isset($_REQUEST['reference_label_1'])) {
             $this->variable['reference_label_1'] = filter_var($_REQUEST['reference_label_1'], FILTER_SANITIZE_STRING);
         } else {
-            $this->variable['reference_label_1'] = 'ID';
+            $this->variable['reference_label_1'] = '';
         }
         return $this;
     }
@@ -124,7 +124,7 @@ class billplzpost {
         if (isset($_REQUEST['reference_label_2'])) {
             $this->variable['reference_label_2'] = filter_var($_REQUEST['reference_label_2'], FILTER_SANITIZE_STRING);
         } else {
-            $this->variable['reference_label_2'] = 'ID';
+            $this->variable['reference_label_2'] = '';
         }
         return $this;
     }
@@ -172,6 +172,24 @@ class billplzpost {
     function process() {
         global $websiteurl;
         global $fallbackurl;
+
+        if (!empty($this->variable['reference_1'])) {
+            $this->billplz->setReference_1($this->variable['reference_1']);
+        }
+
+        if (!empty($this->variable['reference_2'])) {
+            $this->billplz->setReference_2($this->variable['reference_2']);
+        }
+
+        if (!empty($this->variable['reference_label_1'])) {
+            $this->billplz->setReference_1_Label($this->variable['reference_label_1']);
+        }
+
+        if (!empty($this->variable['reference_label_2'])) {
+            $this->billplz->setReference_2_Label($this->variable['reference_label_2']);
+        }
+
+
         $this->billplz->setAmount($this->variable['amount'])
                 ->setCollection($this->variable['collection_id'])
                 ->setDeliver($this->variable['notifikasi'])
@@ -180,10 +198,6 @@ class billplzpost {
                 ->setMobile($this->variable['mobile'])
                 ->setName($this->variable['name'])
                 ->setPassbackURL($this->variable['callback_url'], $this->variable['redirect_url'])
-                ->setReference_1($this->variable['reference_1'])
-                ->setReference_1_Label($this->variable['reference_label_1'])
-                ->setReference_2($this->variable['reference_2'])
-                ->setReference_2_Label($this->variable['reference_label_2'])
                 ->create_bill($this->variable['api_key'], true);
 
         //If the Create Bills API NOT Successfully triggered
