@@ -14,8 +14,8 @@ class verifytrans {
          * Get Data. Die if input is tempered or X Signature not enabled
          */
         global $x_signature;
-        $this->data = billplz::getRedirectData($x_signature);
-        $this->billplz = new billplz;
+        $this->data = Billplz::getRedirectData($x_signature);
+        $this->billplz = new Billplz;
     }
 
     function checkStatus() {
