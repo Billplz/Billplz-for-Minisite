@@ -11,7 +11,7 @@ class billplzpost {
     function __construct() {
 
         $this->variable = array();
-        $this->billplz = new billplz;
+        $this->billplz = new Billplz;
     }
 
     function apikey() {
