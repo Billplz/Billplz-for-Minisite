@@ -6,10 +6,10 @@ require_once 'configuration.php';
 /*
  * Get Data. Die if input is tempered or X Signature not enabled
  */
-$data = billplz::getCallbackData($x_signature);
+$data = Billplz::getCallbackData($x_signature);
 $tranID = $data['id'];
 
-$billplz = new billplz;
+$billplz = new Billplz;
 $moreData = $billplz->check_bill($api_key, $tranID);
 
 /*
