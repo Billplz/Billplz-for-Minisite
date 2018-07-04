@@ -95,11 +95,4 @@ You need to have a form which collect and pass the input to the script.
 
 # Issues?
 
-- Check the following
-  1. API Key
- 
-- Please email to me: wan@wanzul-hosting.com 
-
-# Donation
- 
- You can support this project by donation: www.wanzul.net/donate
+Facebook: [Billplz Dev Jam](https://www.facebook.com/groups/billplzdevjam/)
