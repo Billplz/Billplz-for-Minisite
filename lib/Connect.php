@@ -1,6 +1,6 @@
 <?php
 
-namespace Billplz/Minisite;
+namespace Billplz\Minisite;
 
 class Connect
 {

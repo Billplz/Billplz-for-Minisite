@@ -38,4 +38,4 @@ echo 'Callback is done';
  * 14. url
  * 15. callback_url
  * 16. redirect_url
- * /
+ */

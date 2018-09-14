@@ -17,6 +17,8 @@ $x_signature = 'X_SIGNATURE';
 
 $websiteurl = 'http://www.google.com';
 $successpath = 'http://www.google.com/success.html';
-$amount = ''; //Example (RM13.50): $amount = '13.50';
+$amount = ''; //Example (RM13.50): $amount = '1350';
 $fallbackurl = ''; //Example: $fallbackurl = 'http://www.google.com/pay.php';
 $description = 'PAYMENT DESCRIPTION';
+$reference_1_label = '';
+$reference_2_label = '';
