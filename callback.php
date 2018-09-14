@@ -1,19 +1,27 @@
 <?php
 
-require_once 'billplz.php';
-require_once 'configuration.php';
+require 'lib/API.php';
+require 'lib/Connect.php';
+require 'configuration.php';
+
+use Billplz\Minisite\API;
+use Billplz\Minisite\Connect;
+
+$data = Connect::getXSignature($x_signature);
+$connnect = (new Connect($api_key))->detectMode();
+$billplz = new API($connnect);
+list($rheader, $rbody) = $billplz->toArray($billplz->getBill($data['id']));
+
+if ($rbody['paid']) {
+    /*Do something here if payment has been made*/
+} else {
+    /*Do something here if payment has not been made*/
+}
+
+echo 'Callback is done';
 
 /*
- * Get Data. Die if input is tempered or X Signature not enabled
- */
-$data = Billplz::getCallbackData($x_signature);
-$tranID = $data['id'];
-
-$billplz = new Billplz;
-$moreData = $billplz->check_bill($api_key, $tranID);
-
-/*
- * Dalam variable $moreData ada maklumat berikut (array):
+ * In variable (array) $moreData you may get this information:
  * 1. reference_1
  * 2. reference_1_label
  * 3. reference_2
@@ -30,36 +38,4 @@ $moreData = $billplz->check_bill($api_key, $tranID);
  * 14. url
  * 15. callback_url
  * 16. redirect_url
- * 
- * Contoh untuk akses data email: $moreData['email'];
- * 
- * Dalam variable $data ada maklumat berikut (array):
- * 1. x_signature
- * 2. id // bill_id
- * 3. paid
- * 4. paid_at
- * 5. amount
- * 6. collection_id
- * 7. due_at
- * 8. email
- * 9. mobile
- * 10. name
- * 11. paid_at
- * 12. state
- * 13. url
- * 
- * Contoh untuk ases data bill_id: $data['id']
- * 
- */
-
-/*
- * Jika bayaran telah dibuat
- */
-if ($data['paid']) {
-    
-}
-/*
- * Jika bayaran tidak dibuat
- */ else {
-    
-}
+ * /
