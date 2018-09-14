@@ -3,7 +3,8 @@
 Integrate Billplz with your Minisite written with HTML code. 
 
 ## Minimum System Requirement
-PHP version 5.6 and above
+- PHP version 5.6
+- PHP libcURL
 
 ## Configuration
 
