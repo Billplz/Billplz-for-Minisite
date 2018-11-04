@@ -15,7 +15,7 @@ Open configuration.php file with your favourite text editor and edit the followi
 *Replace with your values in the single quotes*
 
   * 'APIKEY' => 'Your API Key here'
-  * **Optional** 'COLLECTION' => 'Your Collection ID here'
+  * 'COLLECTION' => 'Your Collection ID here'
   * 'X_SIGNATURE' => 'Your X Signature Key here'
   * 'http://www.google.com' => 'The full URL to your minisite or the full URL to this script subdirectory.
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'.
