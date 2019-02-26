@@ -26,6 +26,14 @@ $optional = array(
     'deliver' => 'false'
 );
 
+if (empty($parameter['mobile']) && empty($parameter['email'])) {
+    $parameter['email'] = 'noreply@billplz.com';
+}
+
+if (!filter_var($parameter['email'], FILTER_VALIDATE_EMAIL)) {
+    $parameter['email'] = 'noreply@billplz.com';
+}
+
 $connnect = (new Connect($api_key))->detectMode();
 $billplz = new API($connnect);
 list ($rheader, $rbody) = $billplz->toArray($billplz->createBill($parameter, $optional));
