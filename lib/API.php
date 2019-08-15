@@ -162,7 +162,7 @@ class API
 
         /* Manipulate Deliver features to allow Email/SMS Only copy */
         if ($sendCopy === '0') {
-            $optioonal['deliver'] = 'false';
+            $optional['deliver'] = 'false';
         } elseif ($sendCopy === '1' && !empty($parameter['email'])) {
             $optional['deliver'] = 'true';
             unset($parameter['mobile']);
