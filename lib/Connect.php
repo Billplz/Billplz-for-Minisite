@@ -18,7 +18,7 @@ class Connect
 
     const TIMEOUT = 10; //10 Seconds
     const PRODUCTION_URL = 'https://www.billplz.com/api/';
-    const STAGING_URL = 'https://billplz-staging.herokuapp.com/api/';
+    const STAGING_URL = 'https://www.billplz-sandbox.com/api/';
 
     public function __construct($api_key)
     {
@@ -302,50 +302,61 @@ class Connect
         return $return;
     }
 
+    public static function buildSourceString($data, $prefix = '')
+    {
+        uksort($data, function ($a, $b) {
+            $a_len = strlen($a);
+            $b_len = strlen($b);
+            $result = strncasecmp($a, $b, min($a_len, $b_len));
+            if ($result === 0) {
+                $result = $b_len - $a_len;
+            }
+            return $result;
+        });
+        $processed = [];
+        foreach ($data as $key => $value) {
+            if ($key === 'x_signature') {
+                continue;
+            }
+     
+            if (is_array($value)) {
+                $processed[] = self::buildSourceString($value, $key);
+            } else {
+                $processed[] = $prefix . $key . stripslashes($value);
+            }
+        }
+        return implode('|', $processed);
+    }
+
     public static function getXSignature($x_signature_key)
     {
-        $signingString = '';
+        $data = array();
 
-        if (isset($_GET['billplz']['id']) &&isset($_GET['billplz']['paid_at']) && isset($_GET['billplz']['paid']) && isset($_GET['billplz']['x_signature'])) {
-            $data = array(
-                'id' => $_GET['billplz']['id'] ,
-                'paid_at' =>  $_GET['billplz']['paid_at'],
-                'paid' => $_GET['billplz']['paid'],
-                'x_signature' =>  $_GET['billplz']['x_signature']
-            );
+        if (isset($_GET['billplz']['x_signature'])) {
+            $keys = array('id', 'paid_at', 'paid', 'transaction_id', 'transaction_status', 'x_signature');
+
+            foreach ($keys as $key){
+                if (isset($_GET['billplz'][$key])){
+                    $data['billplz'][$key] = $_GET['billplz'][$key];
+                }
+            } 
             $type = 'redirect';
         } elseif (isset($_POST['x_signature'])) {
-            $data = array(
-               'amount' => isset($_POST['amount']) ? $_POST['amount'] : '',
-               'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : '',
-               'due_at' => isset($_POST['due_at']) ? $_POST['due_at'] : '',
-               'email' => isset($_POST['email']) ? $_POST['email'] : '',
-               'id' => isset($_POST['id']) ? $_POST['id'] : '',
-               'mobile' => isset($_POST['mobile']) ? $_POST['mobile'] : '',
-               'name' => isset($_POST['name']) ? $_POST['name'] : '',
-               'paid_amount' => isset($_POST['paid_amount']) ? $_POST['paid_amount'] : '',
-               'paid_at' => isset($_POST['paid_at']) ? $_POST['paid_at'] : '',
-               'paid' => isset($_POST['paid']) ? $_POST['paid'] : '',
-               'state' => isset($_POST['state']) ? $_POST['state'] : '',
-               'url' => isset($_POST['url']) ? $_POST['url'] : '',
-               'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] :'',
-            );
+            $keys = array('amount', 'collection_id', 'due_at', 'email', 'id', 'mobile', 'name', 'paid_amount', 'transaction_id', 'transaction_status', 'paid_at', 'paid', 'state', 'url', 'x_signature');
+            foreach ($keys as $key){
+                if (isset($_POST[$key])){
+                    $data[$key] = $_POST[$key];
+                }
+            }
             $type = 'callback';
         } else {
-            return false;
+            throw new \Exception('X Signature on Payment Completion not activated.');
         }
 
-        foreach ($data as $key => $value) {
-            if (isset($_GET['billplz']['id'])) {
-                $signingString .= 'billplz'.$key . $value;
-            } else {
-                $signingString .= $key . $value;
-            }
-            if (($key === 'url' && isset($_POST['x_signature']))|| ($key === 'paid' && isset($_GET['billplz']['id']))) {
-                break;
-            } else {
-                $signingString .= '|';
-            }
+        $signing = self::buildSourceString($data);
+
+        if ($type == 'redirect'){
+            $data = $data['billplz'];
         }
 
         /*
@@ -353,16 +364,16 @@ class Connect
          */
         $data['paid'] = $data['paid'] === 'true' ? true : false;
 
-        $signedString = hash_hmac('sha256', $signingString, $x_signature_key);
+        $signed = hash_hmac('sha256', $signing, $x_signature_key);
 
-        if ($data['x_signature'] === $signedString) {
+        if ($data['x_signature'] === $signed) {
             $data['type'] = $type;
             return $data;
         }
 
         throw new \Exception('X Signature Calculation Mismatch!');
     }
-
+    
     public function deactivateCollection($title, $option = 'deactivate')
     {
         $url = $this->url . 'v3/collections/'.$title.'/'.$option;
