@@ -3,7 +3,7 @@
 Integrate Billplz with your Minisite written with HTML code. 
 
 ## Minimum System Requirement
-- PHP version 5.6
+- PHP version 7.2
 - PHP libcURL
 
 ## Configuration
@@ -17,6 +17,7 @@ Open configuration.php file with your favourite text editor and edit the followi
   * 'APIKEY' => 'Your API Key here'
   * 'COLLECTION' => 'Your Collection ID here'
   * 'X_SIGNATURE' => 'Your X Signature Key here'
+  * Change `$is_sandbox = false` to `$is_sandbox = true` for sandbox
   * 'http://www.google.com' => 'The full URL to your minisite or the full URL to this script subdirectory.
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'.
   *  **Optional**: Set $fallbackurl value  in the event of failure to redirect user to payment page

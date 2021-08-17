@@ -34,8 +34,9 @@ if (!filter_var($parameter['email'], FILTER_VALIDATE_EMAIL)) {
     $parameter['email'] = 'noreply@billplz.com';
 }
 
-$connnect = (new Connect($api_key))->detectMode();
-$billplz = new API($connnect);
+$connect = new Connect($api_key);
+$connect->setStaging($is_sandbox);
+$billplz = new API($connect);
 list ($rheader, $rbody) = $billplz->toArray($billplz->createBill($parameter, $optional));
 /***********************************************/
 // Include tracking code here

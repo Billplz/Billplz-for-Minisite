@@ -7,9 +7,10 @@ require 'configuration.php';
 use Billplz\Minisite\API;
 use Billplz\Minisite\Connect;
 
-$data = Connect::getXSignature($x_signature);
-$connnect = (new Connect($api_key))->detectMode();
-$billplz = new API($connnect);
+$data = Connect::getXSignature($x_signature, 'bill_callback');
+$connect = new Connect($api_key);
+$connect->setStaging($is_sandbox);
+$billplz = new API($connect);
 list($rheader, $rbody) = $billplz->toArray($billplz->getBill($data['id']));
 
 if ($rbody['paid']) {
