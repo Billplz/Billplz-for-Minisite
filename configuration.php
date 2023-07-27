@@ -24,3 +24,5 @@ $fallbackurl = ''; //Example: $fallbackurl = 'http://www.google.com/pay.php';
 $description = 'PAYMENT DESCRIPTION';
 $reference_1_label = '';
 $reference_2_label = '';
+
+$debug = true;
