@@ -41,12 +41,17 @@ list ($rheader, $rbody) = $billplz->toArray($billplz->createBill($parameter, $op
 /***********************************************/
 // Include tracking code here
 /***********************************************/
+
+$is_debug = defined('DEBUG') || (bool) $debug;
+
 if ($rheader !== 200) {
-    if (defined('DEBUG')) {
-        echo '<pre>'.print_r($rbody, true).'</pre>';
-    }
     if (!empty($fallbackurl)) {
         header('Location: ' . $fallbackurl);
+    } elseif ($is_debug) {
+        echo '<pre>'.print_r($rbody, true).'</pre>';
     }
 }
-header('Location: ' . $rbody['url']);
+
+if (isset($rbody['url'])) {
+    header('Location: ' . $rbody['url']);
+}
