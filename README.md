@@ -20,8 +20,9 @@ Open configuration.php file with your favourite text editor and edit the followi
   * Change `$is_sandbox = false` to `$is_sandbox = true` for sandbox
   * 'http://www.google.com' => 'The full URL to your minisite or the full URL to this script subdirectory.
   * 'http://www.google.com/success.html' => 'The full URL to redirect your payee after successful payment'.
-  *  **Optional**: Set $fallbackurl value  in the event of failure to redirect user to payment page
-  *  **Optional**: Set $amount value for fixed payment value. Useful to avoid user setting their own price
+  *  **Optional**: Set $fallbackurl value  in the event of failure to redirect user to payment page.
+  *  **Optional**: Set $amount value for fixed payment value. Useful to avoid user setting their own price.
+  *  **Optional**: Set $debug to true to return error message upon payment redirection failure.
 
 ---
 

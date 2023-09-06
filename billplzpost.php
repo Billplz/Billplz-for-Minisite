@@ -45,13 +45,15 @@ list ($rheader, $rbody) = $billplz->toArray($billplz->createBill($parameter, $op
 $is_debug = defined('DEBUG') || (bool) $debug;
 
 if ($rheader !== 200) {
-    if (!empty($fallbackurl)) {
-        header('Location: ' . $fallbackurl);
-    } elseif ($is_debug) {
+    if ($is_debug) {
         echo '<pre>'.print_r($rbody, true).'</pre>';
+    } elseif (!empty($fallbackurl)) {
+        header('Location: ' . $fallbackurl);
+        exit;
     }
 }
 
 if (isset($rbody['url'])) {
     header('Location: ' . $rbody['url']);
+    exit;
 }

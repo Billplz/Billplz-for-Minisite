@@ -25,4 +25,4 @@ $description = 'PAYMENT DESCRIPTION';
 $reference_1_label = '';
 $reference_2_label = '';
 
-$debug = true;
+$debug = false;
