@@ -19,9 +19,9 @@ $parameter = array(
 
 $optional = array(
     'redirect_url' => $websiteurl . '/redirect.php',
-    'reference_1_label' => isset($reference_1_label) ? $reference_1_label : $_REQUEST['reference_1_label'],
+    'reference_1_label' => !empty($reference_1_label) ? $reference_1_label : $_REQUEST['reference_1_label'],
     'reference_1' => isset($_REQUEST['reference_1']) ? $_REQUEST['reference_1'] : '',
-    'reference_2_label' => isset($reference_2_label) ? $reference_2_label : $_REQUEST['reference_2_label'],
+    'reference_2_label' => !empty($reference_2_label) ? $reference_2_label : $_REQUEST['reference_2_label'],
     'reference_2' => isset($_REQUEST['reference_2']) ? $_REQUEST['reference_2'] : '',
     'deliver' => 'false'
 );
